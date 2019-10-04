@@ -1,0 +1,87 @@
+﻿Basin,RunType
+MAEL,Fall
+MAEL,Spring
+"SACR, FEA, MERC, MOKE, TUST",Fall/Late Fall
+"SACR, FEA, MERC, MOKE, TUST",Fall
+SACR,Spring
+"SAFA, SACR, SAFAG, SJOA, SJOAG, FEA, MERC, MOKE, SJR, TUST",Winter
+"COWL, GREL, LEWI, SAND, SAWA, YOCL",Fall Tule
+"COWL, GREL, LEWI, SAND, SAWA, YOCL",Fall Tule
+"COWL, GREL, LEWI, SAND, SAWA, YOCL",Fall Tule
+"COWL, LEWI, SAND, WILL, YOCL",Spring
+"WILL, SAND, YOCL, ALSE, COWL",Spring
+CECR Region,Fall Bright
+CCST,Spring-Summer
+NA,Summer
+"LWFR, GSMS, GSMN",Fall
+TOMF,Summer 0.3
+LWFR,Spring 1.2
+UPFR,Summer 1.3
+"LWFR, TOMF",Summer 0.3
+UPFR,Spring 1.3
+GSMS,Fall
+NASS,Spring
+EKPS,"Summer, Fall"
+SKNA,Spring-Summer
+GSMN,Fall
+"NWVI, SWVI",Fall
+QCIG,Spring
+"COOS, SIXE",Fall
+COQU,Fall
+NEHA,Fall
+UMPQ,Fall
+SIYA,Fall
+SIUS,Fall
+ELDU,Spring
+EKPN,Fall
+ELDU,Spring
+ELDU,Fall
+DUWA,Spring
+DUWA,Fall
+SKDO,Spring
+SKDO,Fall
+LAKW,Fall
+NOOK,Spring
+NOOK,Fall
+PUYA,Spring
+PUYA,Fall
+UPSK,Spring
+"LOSK, UPSK",Summer-Fall
+SNOH,Spring
+SNOH,Summer
+EKPS,Spring
+"CHAM, DES, EKPS, NISQ",Fall
+STIL,Spring/Summer
+"STIL, SNOH*",Summer-Fall
+"CLEA, GRIA, LOSN, SALM, UPSN",Spring/Summer
+CHET,Fall
+CHET,Fall
+ROGU,Fall
+ROGU,Spring
+SMIT,Fall
+UMPQ,Spring
+CHET,Fall
+"MEOK, MNPR, YAKI",Spring
+"KLAM, TRIN",Fall
+TRIN,Spring
+GHLC,Fall
+"GRAY, GHLC, UPCH, GRAYG",Spring
+QUHO,Fall
+QUHO,Spring-Summer
+LYHO,Fall
+QEQU,Fall
+QEQU,Spring-Summer
+QUHO,Fall
+QUHO,Spring-Summer
+"NASE, WILR",Fall
+ALSRG,Spring
+"SENE, SESE",Spring
+CHILG,Spring
+"UPCR, HEAD, MEOK, MNPR, PRGC, WCH, YAKI, UPCRG",Summer
+DESC,Fall Bright
+"CLEA, DESC, GRIA, KLIC, LOSN, MNPR, SAND, UMAT, UPSN, WIND, YAKI, YOCL",Upriver Fall Bright
+LEWI,Fall Bright
+SENE,Spring
+"TRGNG, STUNG",Spring
+"TAWHG, TRGNG",Spring
+"STUNG, SENE, SESE",Spring
