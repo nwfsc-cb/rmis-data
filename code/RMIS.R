@@ -1,4 +1,5 @@
 library(tidyverse)
+library(here)
 #this script joins releases and recoveries
 #Creates a file that has all release/recovery and locations when applicable
 
@@ -8,38 +9,42 @@ library(tidyverse)
 #create dat_focal which is release and recoveries combined
 #load recoveries
 
-  recover = read.csv("data/chinook/recoveries_1973.csv", stringsAsFactors = FALSE)
-  recover = dplyr::select(recover, species,
-    tag_code, recovery_id, 
-    recovery_date, fishery, gear, sex, length, length_type, length_code,
-    recovery_location_code, recovery_location_name, 
-    estimation_level, estimated_number, detection_method)
-  for(y in 1974:2017) {
-    #  names change slightly in 2015,
-    temp = read.csv(paste0("data/chinook/recoveries_",y,".csv"), 
-                    stringsAsFactors = FALSE)
-    temp = dplyr::select(temp, species, tag_code, recovery_id, recovery_date, fishery, gear, 
-      sex, length, length_type, length_code,
-      recovery_location_code, recovery_location_name, estimation_level, 
-      estimated_number, detection_method)
-    recover = rbind(recover, temp)
-  }
-  
-  recover = dplyr::filter(recover, !is.na(estimated_number)) %>% 
-    filter(tag_code != "")
-  
-  #load release data
-  release = read.csv("data/chinook/all_releases.txt", header=T, stringsAsFactors = FALSE) 
-  release = dplyr::select(release, tag_code_or_release_id, run, brood_year, first_release_date,
-                          release_location_code, stock_location_code, cwt_1st_mark_count, cwt_2nd_mark_count,
-                          non_cwt_1st_mark_count, non_cwt_2nd_mark_count, release_location_name,
-                          stock_location_name, release_location_state, release_location_rmis_region, 
-                          release_location_rmis_basin) %>% 
-    dplyr::rename(tag_code = tag_code_or_release_id)
+#   recover = read.csv("data/chinook/recoveries_1973.csv", stringsAsFactors = FALSE)
+#   recover = dplyr::select(recover, species,
+#     tag_code, recovery_id, 
+#     recovery_date, fishery, gear, sex, length, length_type, length_code,
+#     recovery_location_code, recovery_location_name, 
+#     estimation_level, estimated_number, detection_method, recovery_description)
+#   for(y in 1974:2017) {
+#     #  names change slightly in 2015,
+#     temp = read.csv(paste0("data/chinook/recoveries_",y,".csv"), 
+#                     stringsAsFactors = FALSE)
+#     temp = dplyr::select(temp, species, tag_code, recovery_id, recovery_date, fishery, gear, 
+#       sex, length, length_type, length_code,
+#       recovery_location_code, recovery_location_name, estimation_level, 
+#       estimated_number, detection_method, recovery_description)
+#     recover = rbind(recover, temp)
+#   }
+#   
+#   recover = dplyr::filter(recover, !is.na(estimated_number)) %>% 
+#     filter(tag_code != "")
+#   
+#   #load release data
+#   release = read.csv("data/chinook/all_releases.txt", header=T, stringsAsFactors = FALSE) 
+#   release = dplyr::select(release, tag_code_or_release_id, run, brood_year, first_release_date,
+#                           release_location_code, stock_location_code, cwt_1st_mark_count, cwt_2nd_mark_count,
+#                           non_cwt_1st_mark_count, non_cwt_2nd_mark_count, release_location_name,
+#                           stock_location_name, release_location_state, release_location_rmis_region, 
+#                           release_location_rmis_basin) %>% 
+#     dplyr::rename(tag_code = tag_code_or_release_id)
+# 
+# #left_join combines the two data frames into dat
+# dat = left_join(recover, release) 
+# ##dat should have all releases and recoveries
 
-#left_join combines the two data frames into dat
-dat = left_join(recover, release) 
-##dat should have all releases and recoveries
+#Eric has already created this file and it includes the descriptions - Now just need to get focal to match in. 
+rmisdat<- here::here("data","joined_releases_recoveries_locations.rds") %>%
+             readRDS(rmisdat)
 
 ##then filter out stocks that we are not interested in...
 #load focal species data that Ole created, this file just has the stocks we are interested in
@@ -47,7 +52,7 @@ focal = read.csv("data/focal_spring_chinook_releases_summary.csv", header=T, str
 #focal now just has one column, stock_location code
 focal=dplyr::select(focal, stock_location_code)
 #combine dat and focal by stock_code_location, filters out stocks we are not interested in
-dat_focal=semi_join(dat, focal)
+dat_focal=semi_join(rmisdat, focal)
 
 #now to sum total releases across rows using coded wire tag columns
 dat_focal$total_release=rowSums(dat_focal[,c('cwt_1st_mark_count', 'cwt_2nd_mark_count', 'non_cwt_1st_mark_count', 'non_cwt_2nd_mark_count')], na.rm=TRUE)
@@ -162,8 +167,8 @@ dat_recovery$rec_year <- as.numeric(dat_recovery$rec_year)
 #################################################################################################################################################################
                                                     #STEP 2: Assign recoveries into regions 
 ################################################################################################################################################################
-setwd("~/Documents/GitHub/rmis/data")
-rec_codes_lookup = read.csv("recovery codes-wietkamp+shelton 12-2018 two PUSO.csv", stringsAsFactors = FALSE)
+
+rec_codes_lookup = read.csv("data/recovery codes-wietkamp+shelton 12-2018 two PUSO.csv", stringsAsFactors = FALSE)
 
 rec_codes_lookup$recovery_location_code <- rec_codes_lookup$location_code
 rec_codes_lookup <- rec_codes_lookup%>% 
@@ -297,18 +302,19 @@ dat_everything <- everything1
                                                                   # SAVE TIDY DATA FILES 
 ################################################################################################################################################################
 
-#write.csv(dat_everything, "rmis_parced.csv" )
-getwd()
+#
+write.csv(dat_everything, "rmis_parced.csv" )
+#getwd()
 
- #CHECK TO MAKE SURE REGION ASSIGNMENTS PLOT OK
-plot <- dat_everything %>%
-  filter(!Latitude == 0)
-
-h <-  p_north_am +
-  geom_point(data = plot, mapping = aes(x = Longitude, y = Latitude, color = region)) +
-  scale_alpha(guide = 'none')+
-  facet_wrap(~fishery_type) +
- 
-  theme_bw() 
-h
-unique(dat_everything$fishery_type)
+#  #CHECK TO MAKE SURE REGION ASSIGNMENTS PLOT OK
+# plot <- dat_everything %>%
+#   filter(!Latitude == 0)
+# 
+# h <-  p_north_am +
+#   geom_point(data = plot, mapping = aes(x = Longitude, y = Latitude, color = region)) +
+#   scale_alpha(guide = 'none')+
+#   facet_wrap(~fishery_type) +
+#  
+#   theme_bw() 
+# h
+# unique(dat_everything$fishery_type)
