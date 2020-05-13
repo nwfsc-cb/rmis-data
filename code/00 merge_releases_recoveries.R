@@ -35,7 +35,7 @@ release = dplyr::select(release, tag_code_or_release_id, run, brood_year, first_
   release_location_code, stock_location_code, cwt_1st_mark_count, cwt_2nd_mark_count,
   non_cwt_1st_mark_count, non_cwt_2nd_mark_count, release_location_name,
   stock_location_name, release_location_state, release_location_rmis_region, 
-  release_location_rmis_basin) %>% 
+  release_location_rmis_basin, avg_length) %>% 
   dplyr::rename(tag_code = tag_code_or_release_id)
 
 #left_join combines the two data frames into dat
