@@ -1,4 +1,4 @@
-
+library(here)
 library(tidyverse)
 #this script joins releases and recoveries
 #Creates a file that has all release/recovery and locations when applicable
@@ -30,7 +30,7 @@ recover = dplyr::filter(recover, !is.na(estimated_number)) %>%
   filter(tag_code != "")
 
 #load release data
-release = read.csv("data/chinook/all_releases.txt", header=T, stringsAsFactors = FALSE) 
+release = read_csv("data/chinook/all_releases.csv", header=T, stringsAsFactors = FALSE) 
 release = dplyr::select(release, tag_code_or_release_id, run, brood_year, first_release_date,
   release_location_code, stock_location_code, cwt_1st_mark_count, cwt_2nd_mark_count,
   non_cwt_1st_mark_count, non_cwt_2nd_mark_count, release_location_name,

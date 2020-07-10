@@ -44,7 +44,7 @@ library(here)
 
 #Eric has already created this file and it includes the descriptions - Now just need to get focal to match in. 
 rmisdat<- here::here("data","joined_releases_recoveries_locations.rds") %>%
-             readRDS(rmisdat)
+             readRDS( )
 
 ##then filter out stocks that we are not interested in...
 #load focal species data that Ole created, this file just has the stocks we are interested in
@@ -163,7 +163,6 @@ dat_recovery <- dat_recovery %>%
   separate(rest_of_rec_date, into = c("rec_month", "rec_day"), sep= 2)
 dat_recovery$rec_year <- as.numeric(dat_recovery$rec_year)
 
-#
 #################################################################################################################################################################
                                                     #STEP 2: Assign recoveries into regions 
 ################################################################################################################################################################
@@ -289,32 +288,17 @@ dat_region_filter <- df_recovery %>%
 everything <- rbind(dat_region_filter, all_dat2, deparse.level = 1, make.row.names = TRUE)  
 
 # conditionally replace latitude and longitude with NA if there is a value in the snoutbase lat and long
-everything1 <- everything %>%
+dat_everything <- everything %>%
  mutate(Latitude = case_when(Lat > 0 ~ Lat,       
                              TRUE ~ latitude)) %>%  
  mutate( Longitude = case_when(Lat > 0 ~ Long, 
                                TRUE ~longitude)) %>%
   dplyr::select(-c(longitude, Long, latitude, Lat)) #now this should have all snout and rmis data with combined lat and longs
 
-dat_everything <- everything1 
 
 #################################################################################################################################################################
                                                                   # SAVE TIDY DATA FILES 
 ################################################################################################################################################################
 
-#
 write.csv(dat_everything, "rmis_parced.csv" )
-#getwd()
 
-#  #CHECK TO MAKE SURE REGION ASSIGNMENTS PLOT OK
-# plot <- dat_everything %>%
-#   filter(!Latitude == 0)
-# 
-# h <-  p_north_am +
-#   geom_point(data = plot, mapping = aes(x = Longitude, y = Latitude, color = region)) +
-#   scale_alpha(guide = 'none')+
-#   facet_wrap(~fishery_type) +
-#  
-#   theme_bw() 
-# h
-# unique(dat_everything$fishery_type)
