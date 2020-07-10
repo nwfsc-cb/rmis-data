@@ -15,7 +15,7 @@ recover = dplyr::select(recover, species,
   recovery_date, fishery, gear, sex, length, length_type, length_code,
   recovery_location_code, recovery_location_name, 
   estimation_level, estimated_number, detection_method)
-for(y in 1974:2017) {
+for(y in 1974:2019) {
   #  names change slightly in 2015,
   temp = read.csv(paste0("data/chinook/recoveries_",y,".csv"), 
     stringsAsFactors = FALSE)
@@ -26,8 +26,14 @@ for(y in 1974:2017) {
   recover = rbind(recover, temp)
 }
 
-recover = dplyr::filter(recover, !is.na(estimated_number)) %>% 
-  filter(tag_code != "")
+## OLE THINKS WE SHOULDN'T DROP ENTRIES WITHOUT ESTIMATED NUMBERS. 
+## THEY CAN BE FILTERED OUT LATER FOR SOME PURPOSES but should be kept for others.
+recover = recover %>% filter( tag_code != "") #%>%
+  #filter(!is.na(estimated_number))
+
+# if you are OLE, write just recover to file for use in other scripts.
+all_chinook <- list(recover=recover,data=date())
+save(file="all_chinook.RData",all_chinook)
 
 #load release data
 release = read.csv("data/chinook/all_releases.txt", header=T, stringsAsFactors = FALSE) 
