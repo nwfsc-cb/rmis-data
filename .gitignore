@@ -3,3 +3,4 @@
 .RData
 .Ruserdata
 joined_releases_recoveries_locations.rds
+.DS_Store
