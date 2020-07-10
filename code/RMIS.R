@@ -46,6 +46,10 @@ library(here)
 rmisdat<- here::here("data","joined_releases_recoveries_locations.rds") %>%
              readRDS(rmisdat)
 
+
+########## THIS SECTION SHOULD NOT EXIST. IT MAKES MISTAKES WITH FILTERING OUT THE FOCAL STOCKS
+
+
 ##then filter out stocks that we are not interested in...
 #load focal species data that Ole created, this file just has the stocks we are interested in
 focal = read.csv("data/focal_spring_chinook_releases_summary.csv", header=T, stringsAsFactors = FALSE) 
