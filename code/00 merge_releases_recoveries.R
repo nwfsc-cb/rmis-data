@@ -32,11 +32,11 @@ recover = recover %>% filter( tag_code != "") #%>%
   #filter(!is.na(estimated_number))
 
 # if you are OLE, write just recover to file for use in other scripts.
-all_chinook <- list(recover=recover,data=date())
-save(file="all_chinook.RData",all_chinook)
+# all_chinook <- list(recover=recover,data=date())
+# save(file="all_chinook.RData",all_chinook)
 
 #load release data
-release = read.csv("data/chinook/all_releases.txt", header=T, stringsAsFactors = FALSE) 
+release = read.csv("/Users/ole.shelton/Github/rmis-data/data/chinook/all_releases.csv", header=T, stringsAsFactors = FALSE) 
 release = dplyr::select(release, tag_code_or_release_id, run, brood_year, first_release_date,
   release_location_code, stock_location_code, cwt_1st_mark_count, cwt_2nd_mark_count,
   non_cwt_1st_mark_count, non_cwt_2nd_mark_count, release_location_name,
@@ -53,7 +53,7 @@ locations = read.csv("data/locations.txt", stringsAsFactors = FALSE)
 locations = locations[,c("location_code","rmis_latitude","rmis_longitude", "description","rmis_region","rmis_basin")]
 locations = rename(locations, recovery_location_code = location_code,
   recovery_description = description, latitude=rmis_latitude, longitude = rmis_longitude)
-dat = left_join(dat, locations)
+dat2 = left_join(dat, locations)
 
 dat = rename(dat, recovery_rmis_region=rmis_region, recovery_rmis_basin=rmis_basin)
 
