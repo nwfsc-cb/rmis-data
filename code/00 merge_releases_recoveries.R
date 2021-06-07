@@ -1,4 +1,4 @@
-
+library(here)
 library(tidyverse)
 #this script joins releases and recoveries
 #Creates a file that has all release/recovery and locations when applicable
@@ -13,7 +13,7 @@ recover = read.csv("data/chinook/recoveries_1973.csv", stringsAsFactors = FALSE)
 recover = dplyr::select(recover, species,
   tag_code, recovery_id, 
   recovery_date, fishery, gear, sex, length, length_type, length_code,
-  recovery_location_code, recovery_location_name, 
+  recovery_location_code, recovery_location_name, sampling_site, sample_type,
   estimation_level, estimated_number, detection_method)
 for(y in 1974:2019) {
   #  names change slightly in 2015,
@@ -21,8 +21,8 @@ for(y in 1974:2019) {
     stringsAsFactors = FALSE)
   temp = dplyr::select(temp, species, tag_code, recovery_id, recovery_date, fishery, gear, 
     sex, length, length_type, length_code,
-    recovery_location_code, recovery_location_name, estimation_level, 
-    estimated_number, detection_method)
+    recovery_location_code, recovery_location_name,  sampling_site, sample_type,
+    estimation_level, estimated_number, detection_method)
   recover = rbind(recover, temp)
 }
 
@@ -32,11 +32,13 @@ recover = recover %>% filter( tag_code != "") #%>%
   #filter(!is.na(estimated_number))
 
 # if you are OLE, write just recover to file for use in other scripts.
-# all_chinook <- list(recover=recover,data=date())
-# save(file="all_chinook.RData",all_chinook)
+all_chinook <- list(recover=recover,date=date())
+save(file="all_chinook.RData",all_chinook)
 
 #load release data
-release = read.csv("/Users/ole.shelton/Github/rmis-data/data/chinook/all_releases.csv", header=T, stringsAsFactors = FALSE) 
+#release = read.csv("/Users/ole.shelton/Github/rmis-data/data/chinook/all_releases.csv", header=T, stringsAsFactors = FALSE) 
+release = read_csv("data/chinook/all_releases.csv", header=T, stringsAsFactors = FALSE) 
+
 release = dplyr::select(release, tag_code_or_release_id, run, brood_year, first_release_date,
   release_location_code, stock_location_code, cwt_1st_mark_count, cwt_2nd_mark_count,
   non_cwt_1st_mark_count, non_cwt_2nd_mark_count, release_location_name,

@@ -1,6 +1,7 @@
 library(tidyverse)
 library(here)
 #this script creates a file that has all release/recovery info assigned into regions 
+
 #################################################################################################################################################################
 # STEP 1: Join Release, Recoveries, and Location information.  ------ Dont need to do step one, Eric did that in Script "00 join release and recovery.R"
 #Eric has already created this file and it includes the descriptions 
@@ -196,4 +197,4 @@ dat_everything <- df_recovery %>%
 # SAVE TIDY DATA FILES 
 ################################################################################################################################################################
 #
-  write.csv(dat_everything, "data/rmis_release_recovery.csv" )
+#  write.csv(dat_everything, "data/rmis_release_recovery.csv" )
