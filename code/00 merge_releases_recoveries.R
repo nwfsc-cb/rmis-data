@@ -9,7 +9,8 @@ library(tidyverse)
 #create dat_focal which is release and recoveries combined
 #load recoveries
 
-recover = read.csv("data/chinook/recoveries_1973.csv", stringsAsFactors = FALSE)
+recover = read.csv("data/chinook/recoveries_1973.csv", stringsAsFactors = FALSE,
+                   colClasses = c("tag_code"="character"))
 recover = dplyr::select(recover, species,
   tag_code, recovery_id, 
   recovery_date, fishery, gear, sex, length, length_type, length_code,
@@ -18,7 +19,8 @@ recover = dplyr::select(recover, species,
 for(y in 1974:2019) {
   #  names change slightly in 2015,
   temp = read.csv(paste0("data/chinook/recoveries_",y,".csv"), 
-    stringsAsFactors = FALSE)
+    stringsAsFactors = FALSE,
+    colClasses = c("tag_code"="character"))
   temp = dplyr::select(temp, species, tag_code, recovery_id, recovery_date, fishery, gear, 
     sex, length, length_type, length_code,
     recovery_location_code, recovery_location_name,  sampling_site, sample_type,
