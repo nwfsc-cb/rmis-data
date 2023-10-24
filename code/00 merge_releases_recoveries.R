@@ -9,18 +9,18 @@ library(tidyverse)
 #create dat_focal which is release and recoveries combined
 #load recoveries
 
-recover = read.csv("data/chinook/recoveries_1973.csv", stringsAsFactors = FALSE,
-                   colClasses = c("tag_code"="character"))
+recover = readRDS("data/chinook/recoveries_1973.rds")
 recover = dplyr::select(recover, species,
   tag_code, recovery_id, 
   recovery_date, fishery, gear, sex, length, length_type, length_code,
   recovery_location_code, recovery_location_name, sampling_site, sample_type,
   estimation_level, estimated_number, detection_method)
-for(y in 1974:2019) {
+for(y in 1974:2022) {
   #  names change slightly in 2015,
-  temp = read.csv(paste0("data/chinook/recoveries_",y,".csv"), 
-    stringsAsFactors = FALSE,
-    colClasses = c("tag_code"="character"))
+  temp = readRDS(paste0("data/chinook/recoveries_",y,".rds"))
+  if("number_cwt_estimated" %in% names(temp)) { # naming changed ~ 2020
+    temp <- dplyr::rename(temp, estimated_number = number_cwt_estimated)
+  } 
   temp = dplyr::select(temp, species, tag_code, recovery_id, recovery_date, fishery, gear, 
     sex, length, length_type, length_code,
     recovery_location_code, recovery_location_name,  sampling_site, sample_type,
@@ -39,7 +39,7 @@ save(file="all_chinook.RData",all_chinook)
 
 #load release data
 #release = read.csv("/Users/ole.shelton/Github/rmis-data/data/chinook/all_releases.csv", header=T, stringsAsFactors = FALSE) 
-release = read_csv("data/chinook/all_releases.csv", header=T, stringsAsFactors = FALSE) 
+release = readRDS("data/chinook/all_releases_oct2023.rds") 
 
 release = dplyr::select(release, tag_code_or_release_id, run, brood_year, first_release_date,
   release_location_code, stock_location_code, cwt_1st_mark_count, cwt_2nd_mark_count,
@@ -51,7 +51,7 @@ release = dplyr::select(release, tag_code_or_release_id, run, brood_year, first_
 #left_join combines the two data frames into dat
 dat = left_join(recover, release) 
 ##dat should have all releases and recoveries
-
+saveRDS(dat, "data/joined_releases_recoveries.rds")
 # pull in location data from RMIS
 locations = read.csv("data/locations.txt", stringsAsFactors = FALSE)
 locations = locations[,c("location_code","rmis_latitude","rmis_longitude", "description","rmis_region","rmis_basin")]
